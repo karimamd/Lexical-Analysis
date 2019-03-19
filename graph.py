@@ -1,37 +1,81 @@
 
-
+from node import *
+import queue
 # helper class for NFAs
-#
+
+
 class Edge:
     def __init__(self,to,val):
         self.to = to
         self.val = val
 
-
+# this class represents a single nfa
 class Graph:
-    def addEdge(self, n , Edge):
-        self.edges[n].append(Edge)
 
-    def __init__(self , start , finish , size,names):
+    def __init__(self , start , finish,name=""):
         self.start = start
-        self.finish = finish # prefered to be a list : can be more than one
-        self.finish_names = names # finish states may have names -> id , number ...etc
-        self.size = sizes
-        self.edges = [[] * self.size]
+        self.finish = finish
+        self.name = name
+        self.start.isStart = True
+        for i in self.finish:
+            i.isFinish = True
+
+    def bfs(self): # returns list of finishes
+        q = queue.Queue()
+        q.put(self.start)
+        finishes = []
+        print("bfs starts\n")
+        while not q.empty():
+            top = q.get()
+            if top.isFinish:
+                finishes.append(top)
+            for i in top.edges:
+                q.put(i[0])
+                print(i[1])
+        return finishes
+
+    def go(self,cur,s):
+        if cur.isFinish:
+            print(s)
+            return
+        for i in cur.edges:
+            self.go(i[0],s+i[1])
+
+    def dfs(self): # displaying all patterns in nfa
+        print("dfs starts\n")
+        self.go(self.start,"")
 
     @staticmethod
-    def Or(nodes):
-        return None
-        # merge a list of NFAs' by or operation
+    def mergeOr(graphs):
 
-    @staticmethod
-    def concatenate(a,b):
-        # conc 2 NFAs
         return None
 
     @staticmethod
-    def star(a):
-        # apply * operator to node
+    def mergeConcatenate(graphs):
+
         return None
 
+    @staticmethod
+    def keenClosure(graphs):
+
+        return None
+
+    @staticmethod
+    def keenClosurePlus(graphs):
+
+        return None
+
+if __name__ == '__main__':
+    # just messin around
+    a = Node()
+    c = Node()
+    b = Node()
+    d = Node()
+    a.addEdge(c,"hamada")
+    a.addEdge(d,"adel")
+    c.addEdge(b,"rewesh")
+    d.addEdge(b,"not rewesh")
+    g = Graph(a,[b])
+    g.bfs()
+    g.dfs()
 
